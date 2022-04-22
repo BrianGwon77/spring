@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.passwordinitializer.mapper.erp.ErpUserMapper">
+    <select id="findEmployee" resultType="String">
+        SELECT
+            REPLACE(HAND_TEL_NO, '-', '')
+        FROM HAA010T
+        WHERE 1=1
+        AND RETIRE_DT IS NULL
+        AND EMP_NO = #{employeeNo}
+    </select>
+
+    <select id="findAuthenticationCode" resultType="String">
+        SELECT
+            AUTHENTICATION_CODE
+        FROM SPRING_AUTHENTICATION
+        WHERE 1=1
+        AND EMPLOYEE_NO = #{employeeNo}
+        AND EXPIRE_DT <![CDATA[>]]> GETDATE()
+        AND USE_YN = 'N'
+    </select>
+
+    <insert id="issueAuthenticationCode" parameterType="String">
+        INSERT INTO SPRING_AUTHENTICATION
+        VALUES (#{employeeNo}, #{authenticationCode}, GETDATE(), DATEADD(MINUTE, 5, GETDATE()), 'N');
+    </insert>
+
+    <update id="disposeAuthenticationCode" parameterType="String">
+        UPDATE SPRING_AUTHENTICATION
+        SET USE_YN = 'Y'
+        WHERE 1=1
+        AND EMPLOYEE_NO = #{employeeNo}
+        AND EXPIRE_DT <![CDATA[>]]> GETDATE()
+        AND USE_YN = 'N'
+    </update>
+
+    <update id="resetPassword" parameterType="String">
+        UPDATE Z_USR_MAST_REC
+        SET PWD = ''
+        WHERE usr_id = #{usr_id}
+    </update>
+
+    <update id="unlockAccount" parameterType="String">
+        update Z_LOG_IN_HSTRY
+        set status = '1'
+            from Z_LOG_IN_HSTRY
+        where usr_id = #{usr_id}
+        and status = '4'
+    </update>
+</mapper>

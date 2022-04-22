@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- // Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Required meta tags // -->
+
+    <meta name="description" content="Login and Register Form HTML Template - developed by 'ceosdesigns' - sold exclusively on 'themeforest.net'">
+    <meta name="author" content="ceosdesigns.sk">
+
+    <title>INTOPS · Password Reset HTML</title>
+
+    <!-- // Favicon -->
+    <link href="../images/favicon.png" rel="icon">
+    <!-- Favicon // -->
+
+    <!-- // Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+    <!-- Google Web Fonts // -->
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- // Font Awesome 5 Free -->
+    <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" rel="stylesheet">
+    <!-- Font Awesome 5 Free // -->
+
+    <!-- // Template CSS files -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <!-- Template CSS files  // -->
+</head>
+<body>
+<!-- // Preloader -->
+<div id="nm-preloader" class="nm-aic nm-vh-md-100">
+    <div class="nm-ripple">
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<!-- Preloader // -->
+
+<main id="page-content-mobile" class="d-flex nm-aic nm-vh-md-100">
+    <div class="overlay"></div>
+
+    <div class="nm-tm-wr">
+        <div class="container">
+
+            <form method="post" th:action="@{/api/login}" th:object="${authenticationDto}">
+
+                <div class="nm-hr nm-up-rl-3">
+                    <h2>본인 인증</h2>
+                    <p>휴대전화를 통한 본인인증이 필요합니다.</p>
+                </div>
+
+                <!-- 휴대폰 번호 입력 -->
+                <div class="input-group nm-gp">
+                    <span class="nm-gp-pp"><i class="fa fa-phone"></i></span>
+                    <input type="text" pattern="[0-9]{6, 10}" class="form-control" th:field="*{employeeNo}" tabindex="1" placeholder="사번" required/>
+                </div>
+
+                <div class="row nm-aic nm-mb-1">
+                    <div class="col-sm-6 nm-mb-1 nm-mb-sm-0">
+                        <button id="sendBtn" class="btn btn-primary nm-hvr nm-btn-2">인증요청</button>
+                    </div>
+                </div>
+                <!-- 휴대폰 번호 입력 -->
+
+                <div class="input-group nm-gp">
+                    <span class="nm-gp-pp"><i class="fa fa-key"></i></span>
+                    <input type="text" pattern="[0-9]{4}" class="form-control" th:field="*{authenticationCode}" tabindex="2" placeholder="인증번호">
+                </div>
+
+                <div class="row nm-aic nm-mb-1">
+                    <div class="col-sm-6 nm-mb-1 nm-mb-sm-0">
+                        <button id="checkBtn" class="btn btn-primary nm-hvr nm-btn-2">인증확인</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</main>
+
+<!-- // Vendor JS files -->
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<!-- Vendor JS files // -->
+
+<!-- Template JS files // -->
+<script src="../js/script.js"></script>
+<!-- Template JS files // -->
+</body>
+</html>
+
+<script>
+
+    $('#sendBtn').click(function(e) {
+
+        /** button default 기능 차단 **/
+        e.preventDefault();
+        let employeeNo = $('#employeeNo').val();
+
+        $.ajax({
+            type: "GET",
+            url: "/api/sendSMS",
+            data: {
+                "employeeNo" : employeeNo
+            },
+            success: function(res){
+                if (res['result'] == "false") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res['msg']
+                    })
+                }
+                else {
+
+                    Swal.fire('인증번호가 발송되었습니다.');
+
+                    $('#sendBtn').click(function(e) {
+                    employeeNo = $('#employeeNo').val();
+                    let authenticationCode = $('#authenticationCode').val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/login",
+                        data: {
+                            "employeeNo": employeeNo,
+                            "authenticationCode": authenticationCode
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: '인증에 실패하였습니다'
+                            });
+                        }
+                    });
+                })
+                }
+            }
+        })
+    });
+</script>

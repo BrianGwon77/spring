@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.passwordinitializer.mapper.mes.MesUserMapper">
+    <update id="resetPassword" parameterType="String">
+        UPDATE Z_USR_MAST_REC
+        SET PWD = ''
+        WHERE usr_id = #{usr_id}
+    </update>
+
+    <update id="unlockAccount" parameterType="String">
+        update Z_LOG_IN_HSTRY
+        set status = '1'
+            from Z_LOG_IN_HSTRY
+        where usr_id = #{usr_id}
+        and status = '4'
+    </update>
+</mapper>

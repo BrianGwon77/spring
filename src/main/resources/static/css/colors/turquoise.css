@@ -1,0 +1,72 @@
+/***********************************************************
+ *
+ * Project name: 	Nimoy · Login & Register Form HTML Template
+ * Decription: 		HTML | Miscellaneous Template for ThemeForest.net
+ * Author: 			ceosDesigns
+ * Link:			http://nimoy.ceosdesigns.sk/ 
+ * Version:			1.00
+ *
+ ************************************************************/
+ 
+a:hover {
+    color: #50c8cc;
+}
+
+.nm-ripple div {
+	border: 4px solid #5cdfe3;
+}
+
+#non-form-side .overlay{
+    background-color: #5cdfe3;
+}
+
+.nm-gp-pp {
+    color: #5cdfe3;
+}
+
+.nm-hr {
+    background: linear-gradient(90deg,#5cdfe3,#50c8cc);
+    box-shadow: 0 4px 20px 0 rgba(92, 223, 227,.14), 0 7px 10px -5px rgba(80, 200, 204,.4);
+}
+
+.nm-lu:hover {
+	border-color: #50c8cc;
+}
+
+.nm-hvr:hover {
+	box-shadow: 0 4px 11px rgba(80, 200, 204,0.35);
+}
+
+.nm-check:hover::before {
+    border-color: #5cdfe3;
+}
+
+.form-check input:checked ~ .nm-check::before {
+    color: #fff;
+    border-color: #5cdfe3;
+    background-color: #50c8cc;
+}
+
+.nm-btn-2 {
+    box-shadow: 0 4px 20px 0 rgba(92, 223, 227,.14), 0 7px 10px -5px rgba(80, 200, 204,.4);
+}
+
+/* OVERRIDE BOOTSTRAP STYLES */
+
+.form-control:focus {  
+    border-color: #5cdfe3;
+}
+
+.btn-primary {
+    background-color: #5cdfe3;
+    border-color: #5cdfe3;
+}
+
+.btn-primary:hover {
+    background-color: #50c8cc;
+    border-color: #50c8cc;
+}
+
+a {
+    color: #5cdfe3;
+}
