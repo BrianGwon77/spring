@@ -1,4 +1,4 @@
-package com.example.passwordinitializer.mapper.mes;
+package com.example.spring.mapper.mes;
 
 import org.apache.ibatis.annotations.Mapper;
 

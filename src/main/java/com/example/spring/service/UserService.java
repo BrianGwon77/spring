@@ -3,10 +3,10 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.example.passwordinitializer.service;
+package com.example.spring.service;
 
-import com.example.passwordinitializer.mapper.erp.ErpUserMapper;
-import com.example.passwordinitializer.mapper.mes.MesUserMapper;
+import com.example.spring.mapper.erp.ErpUserMapper;
+import com.example.spring.mapper.mes.MesUserMapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

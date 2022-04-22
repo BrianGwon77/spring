@@ -1,4 +1,4 @@
-package com.example.passwordinitializer.config;
+package com.example.spring.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource("classpath:/application.properties")
-@MapperScan(value="com.example.passwordinitializer.mapper.erp", sqlSessionFactoryRef="erpSqlSessionFactory")
+@MapperScan(value="com.example.spring.mapper.erp", sqlSessionFactoryRef="erpSqlSessionFactory")
 public class ErpDatabaseConfig {
 
     @Bean(name="erpDataSource")

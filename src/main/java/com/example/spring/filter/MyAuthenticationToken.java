@@ -1,4 +1,4 @@
-package com.example.passwordinitializer.filter;
+package com.example.spring.filter;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

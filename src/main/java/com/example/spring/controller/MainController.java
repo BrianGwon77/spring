@@ -3,12 +3,12 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.example.passwordinitializer.controller;
+package com.example.spring.controller;
 
-import com.example.passwordinitializer.dto.AjaxReturnValue;
-import com.example.passwordinitializer.dto.AuthenticationDto;
-import com.example.passwordinitializer.service.CertificationService;
-import com.example.passwordinitializer.service.UserService;
+import com.example.spring.dto.AjaxReturnValue;
+import com.example.spring.dto.AuthenticationDto;
+import com.example.spring.service.CertificationService;
+import com.example.spring.service.UserService;
 
 import java.util.Date;
 import java.util.HashMap;

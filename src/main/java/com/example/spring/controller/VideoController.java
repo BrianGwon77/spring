@@ -1,4 +1,4 @@
-package com.example.passwordinitializer.controller;
+package com.example.spring.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;

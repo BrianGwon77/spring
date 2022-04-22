@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.passwordinitializer.mapper.erp.ErpUserMapper">
+<mapper namespace="com.example.spring.mapper.erp.ErpUserMapper">
     <select id="findEmployee" resultType="String">
         SELECT
             REPLACE(HAND_TEL_NO, '-', '')

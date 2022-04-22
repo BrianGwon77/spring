@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.passwordinitializer.mapper.mes.MesUserMapper">
+<mapper namespace="com.example.spring.mapper.mes.MesUserMapper">
     <update id="resetPassword" parameterType="String">
         UPDATE Z_USR_MAST_REC
         SET PWD = ''

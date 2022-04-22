@@ -1,4 +1,4 @@
-package com.example.passwordinitializer.dto;
+package com.example.spring.dto;
 
 import lombok.Data;
 

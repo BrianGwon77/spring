@@ -1,4 +1,4 @@
-package com.example.passwordinitializer.config;
+package com.example.spring.config;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;

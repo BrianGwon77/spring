@@ -1,4 +1,4 @@
-package com.example.passwordinitializer.controller;
+package com.example.spring.controller;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

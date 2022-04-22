@@ -3,11 +3,11 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.example.passwordinitializer.service;
+package com.example.spring.service;
 
 import java.util.HashMap;
 
-import com.example.passwordinitializer.mapper.erp.ErpUserMapper;
+import com.example.spring.mapper.erp.ErpUserMapper;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;

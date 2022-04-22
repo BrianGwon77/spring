@@ -1,6 +1,6 @@
-package com.example.passwordinitializer.filter;
+package com.example.spring.filter;
 
-import com.example.passwordinitializer.service.UserService;
+import com.example.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
