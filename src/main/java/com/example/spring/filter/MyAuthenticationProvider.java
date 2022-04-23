@@ -1,5 +1,6 @@
 package com.example.spring.filter;
 
+import com.example.spring.dto.EmployeeDto;
 import com.example.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,7 +12,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -24,9 +27,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 
         String employeeNo = authentication.getName();
         String authenticationCode = userService.findAuthenticationCode(employeeNo);
+        EmployeeDto employeeDto = userService.findEmployee(employeeNo);
 
-        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> roles = Arrays.stream(employeeDto.getAuthority().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         if (authenticationCode == null) {
             throw new BadCredentialsException("please, send authentication code first.");

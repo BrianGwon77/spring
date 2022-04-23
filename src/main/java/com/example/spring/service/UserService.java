@@ -5,6 +5,7 @@
 
 package com.example.spring.service;
 
+import com.example.spring.dto.EmployeeDto;
 import com.example.spring.mapper.erp.ErpUserMapper;
 import com.example.spring.mapper.mes.MesUserMapper;
 
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -27,26 +29,20 @@ public class UserService {
            FilterChainProxy - List<FilterChain> (Matchers, List<Filter>)
            사용자의 Request (요청 자원, URL)이 Matchers와 일치한다면 List<Filter> 의 Filter들을 순차적으로 통과시킨다.
     **/
-    private enum SYSTEM { ERP, MES };
+    private static int ERP = 0;
+    private static int MES = 1;
     private final ErpUserMapper erpUserMapper;
     private final MesUserMapper mesUserMapper;
 
-    public void unlockAccount(String usr_id, int system) {
-        if (SYSTEM.ERP.equals(system))
-            this.erpUserMapper.unlockAccount(usr_id);
-        else
-            this.mesUserMapper.unlockAccount(usr_id);
-    }
-
-    public String findEmployee(String employeeNo){
+    public EmployeeDto findEmployee(String employeeNo){
         return erpUserMapper.findEmployee(employeeNo);
     }
 
-    public void resetPassword(String usr_id, int system) {
-        if (SYSTEM.ERP.equals(system))
-            this.erpUserMapper.resetPassword(usr_id);
+    public void resetPassword(String employeeNo, int system) {
+        if (system == ERP)
+            this.erpUserMapper.resetPassword(employeeNo);
         else
-            this.mesUserMapper.resetPassword(usr_id);
+            this.mesUserMapper.resetPassword(employeeNo);
     }
 
     public String findAuthenticationCode(String employeeNo){

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- // Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Required meta tags // -->
+
+    <meta name="description" content="Login and Register Form HTML Template - developed by 'ceosdesigns' - sold exclusively on 'themeforest.net'">
+	<meta name="author" content="ceosdesigns.sk">
+
+    <title>INTOPS · Password Reset HTML</title>
+
+	<!-- // Favicon -->
+	<link href="../images/favicon.png" rel="icon">
+	<!-- Favicon // -->
+
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<!-- // Google Web Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+	<!-- Google Web Fonts // -->
+
+	<!-- // Font Awesome 5 Free -->
+	<link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" rel="stylesheet">
+	<!-- Font Awesome 5 Free // -->
+
+    <!-- // Template CSS files -->
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet">
+	<!-- Template CSS files  // -->
+</head>
+<body>
+	<!-- // Preloader -->
+	<div id="nm-preloader" class="nm-aic nm-vh-md-100">
+		<div class="nm-ripple">
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+	<!-- Preloader // -->
+
+	<main id="page-content" class="d-flex nm-aic nm-vh-md-100">
+		<div class="overlay"></div>
+		
+		<div class="nm-tm-wr">
+			<div class="container">
+
+				<div class="nm-hr nm-up-rl-3">
+					<h2>시스템 비밀번호 초기화<br/>(관리자용)</h2>
+					<p>비밀번호 초기화 할 사번을 입력해주세요.</p>
+				</div>
+
+				<div class="input-group nm-gp">
+					<select class="form-select" aria-label="Default select example" id="system-select">
+						<option value="0" selected>ERP</option>
+						<option value="1">MES</option>
+					</select>
+				</div>
+
+				<div class="input-group nm-gp">
+					<span class="nm-gp-pp"><i class="fa fa-phone"></i></span>
+					<input type="text" pattern="[0-9]{6, 10}" class="form-control" th:id="employeeNo" tabindex="1" placeholder="사번" required/>
+				</div>
+
+				<div class="row nm-aic nm-mb-1">
+					<div class="col-sm-6 nm-mb-1 nm-mb-sm-0">
+						<button id="checkBtn" class="btn btn-primary nm-hvr nm-btn-2">초기화</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+	<!-- // Vendor JS files -->
+	<script src="../js/jquery-3.6.0.min.js"></script>
+	<script src="../js/bootstrap.bundle.min.js"></script>
+	<!-- Vendor JS files // -->
+
+	<!-- Template JS files // -->
+	<script src="../js/script.js"></script>
+	<!-- Template JS files // -->
+</body>
+</html>
+
+<script>
+	$('#checkBtn').click(function(e){
+		e.preventDefault();
+		let system = $('#system-select option:selected').val();
+		let employeeNo = $('#employeeNo').val();
+		$.ajax({
+			type: "GET",
+			url: "/api/resetPasswordAdmin",
+			data: {
+				"employeeNo" : employeeNo,
+				"system" : system
+			},
+			success: function(res){
+				if(res['result'] == 'true') {
+					Swal.fire({
+						icon: 'success',
+						title: 'Success',
+						text: res['msg']
+					});
+				}
+				else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: res['msg']
+					});
+				}
+			}
+		})
+	});
+</script>

@@ -7,9 +7,11 @@ package com.example.spring.controller;
 
 import com.example.spring.dto.AjaxReturnValue;
 import com.example.spring.dto.AuthenticationDto;
+import com.example.spring.dto.EmployeeDto;
 import com.example.spring.service.CertificationService;
 import com.example.spring.service.UserService;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +22,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,7 +48,9 @@ public class MainController {
     @ResponseBody
     public AjaxReturnValue sendSMS(HttpServletRequest request, String employeeNo) {
 
-        String contact = userService.findEmployee(employeeNo);
+        EmployeeDto employeeDto = userService.findEmployee(employeeNo);
+        String contact = employeeDto.getContact();
+
         /** 입력한 사번이 존재하지 않는 사번인 경우 혹은 휴대전화번호가 등록되어 있지 않은 경우 return false **/
         if (contact == null)
             return new AjaxReturnValue("false", "등록되지 않은 휴대전화번호입니다.");
@@ -79,10 +87,15 @@ public class MainController {
     @GetMapping({"/resetPassword"})
     @ResponseBody
     public AjaxReturnValue resetPassword(HttpServletRequest request, int system) {
+        String employeeNo = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.resetPassword(employeeNo, system);
+        return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다");
+    }
 
-        String usr_id = SecurityContextHolder.getContext().getAuthentication().getName();
-        userService.unlockAccount(usr_id, system);
-        userService.resetPassword(usr_id, system);
+    @GetMapping({"/resetPasswordAdmin"})
+    @ResponseBody
+    public AjaxReturnValue resetPasswordAdmin(HttpServletRequest request, String employeeNo, int system) {
+        userService.resetPassword(employeeNo, system);
         return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다");
     }
 
@@ -98,7 +111,12 @@ public class MainController {
 
     @GetMapping({"/main"})
     public String main(HttpServletRequest request, HttpServletResponse response) {
+
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+            return "main_admin";
+
         return "main";
+
     }
 
 }
