@@ -5,8 +5,10 @@
 
 package com.example.spring.service;
 
+import com.example.spring.Constant;
 import com.example.spring.dto.EmployeeDto;
 import com.example.spring.mapper.erp.ErpUserMapper;
+import com.example.spring.mapper.groupware.GroupwareUserMapper;
 import com.example.spring.mapper.mes.MesUserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -29,20 +31,22 @@ public class UserService {
            FilterChainProxy - List<FilterChain> (Matchers, List<Filter>)
            사용자의 Request (요청 자원, URL)이 Matchers와 일치한다면 List<Filter> 의 Filter들을 순차적으로 통과시킨다.
     **/
-    private static int ERP = 0;
-    private static int MES = 1;
+
     private final ErpUserMapper erpUserMapper;
     private final MesUserMapper mesUserMapper;
+    private final GroupwareUserMapper groupwareUserMapper;
 
     public EmployeeDto findEmployee(String employeeNo){
         return erpUserMapper.findEmployee(employeeNo);
     }
 
     public void resetPassword(String employeeNo, int system) {
-        if (system == ERP)
+        if (system == Constant.ERP) {
             this.erpUserMapper.resetPassword(employeeNo);
-        else
+        } else if (system == Constant.MES)
             this.mesUserMapper.resetPassword(employeeNo);
+        else if (system == Constant.Groupware)
+            this.groupwareUserMapper.resetPassword(employeeNo);
     }
 
     public String findAuthenticationCode(String employeeNo){

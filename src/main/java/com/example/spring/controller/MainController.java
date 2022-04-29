@@ -5,6 +5,7 @@
 
 package com.example.spring.controller;
 
+import com.example.spring.Constant;
 import com.example.spring.dto.AjaxReturnValue;
 import com.example.spring.dto.AuthenticationDto;
 import com.example.spring.dto.EmployeeDto;
@@ -89,14 +90,18 @@ public class MainController {
     public AjaxReturnValue resetPassword(HttpServletRequest request, int system) {
         String employeeNo = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.resetPassword(employeeNo, system);
-        return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다");
+        if (system == Constant.ERP || system == Constant.MES)
+            return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다" + System.lineSeparator() + "아무 비밀번호나 입력하시면 초기화 화면이 나타납니다.");
+        return new AjaxReturnValue("true", "비밀번호가 intops1234!로 초기화 되었습니다");
     }
 
     @GetMapping({"/resetPasswordAdmin"})
     @ResponseBody
     public AjaxReturnValue resetPasswordAdmin(HttpServletRequest request, String employeeNo, int system) {
         userService.resetPassword(employeeNo, system);
-        return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다");
+        if (system == Constant.ERP || system == Constant.MES)
+            return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다" + System.lineSeparator() + "아무 비밀번호나 입력하시면 초기화 화면이 나타납니다.");
+        return new AjaxReturnValue("true", "그룹웨어 비밀번호가 intops1234!로 초기화 되었습니다");
     }
 
     @GetMapping({"/login"})
@@ -111,10 +116,8 @@ public class MainController {
 
     @GetMapping({"/main"})
     public String main(HttpServletRequest request, HttpServletResponse response) {
-
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
             return "main_admin";
-
         return "main";
 
     }
