@@ -21,6 +21,8 @@ import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceUtils;
 import org.springframework.security.core.Authentication;
@@ -30,6 +32,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -93,6 +96,12 @@ public class MainController {
         if (system == Constant.ERP || system == Constant.MES)
             return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다" + System.lineSeparator() + "아무 비밀번호나 입력하시면 초기화 화면이 나타납니다.");
         return new AjaxReturnValue("true", "비밀번호가 intops1234!로 초기화 되었습니다");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpEntity<String> req = new HttpEntity<>("request", httpHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange("aa", "post",req, )
+
     }
 
     @GetMapping({"/resetPasswordAdmin"})
