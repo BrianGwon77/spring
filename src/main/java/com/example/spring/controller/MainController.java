@@ -9,7 +9,9 @@ import com.example.spring.Constant;
 import com.example.spring.dto.AjaxReturnValue;
 import com.example.spring.dto.AuthenticationDto;
 import com.example.spring.dto.EmployeeDto;
+import com.example.spring.dto.SuremResponse;
 import com.example.spring.service.CertificationService;
+import com.example.spring.service.RestTemplateService;
 import com.example.spring.service.UserService;
 
 import java.io.IOException;
@@ -47,6 +49,7 @@ public class MainController {
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
     private final UserService userService;
     private final CertificationService certificationService;
+    private final RestTemplateService restTemplateService;
 
     @GetMapping({"/sendSMS"})
     @ResponseBody
@@ -75,13 +78,16 @@ public class MainController {
 
         System.out.println("수신자 번호 : " + contact);
         System.out.println("인증번호 : " + numStr);
-        this.certificationService.certifiedPhoneNumber(contact, numStr);
+        String code = this.restTemplateService.surem(contact, numStr);
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("employeeNo" , employeeNo);
         map.put("authenticationCode", numStr);
 
         userService.issueAuthenticationCode(map);
+
+        if (!code.equals("200"))
+            return new AjaxReturnValue("false", "인증번호 발송에 실패하였습니다.");
 
         /** 4자리 난수 반환 **/
         return new AjaxReturnValue("success", numStr);
@@ -96,12 +102,6 @@ public class MainController {
         if (system == Constant.ERP || system == Constant.MES)
             return new AjaxReturnValue("true", "비밀번호 초기화가 완료되었습니다" + System.lineSeparator() + "아무 비밀번호나 입력하시면 초기화 화면이 나타납니다.");
         return new AjaxReturnValue("true", "비밀번호가 intops1234!로 초기화 되었습니다");
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        HttpEntity<String> req = new HttpEntity<>("request", httpHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange("aa", "post",req, )
-
     }
 
     @GetMapping({"/resetPasswordAdmin"})

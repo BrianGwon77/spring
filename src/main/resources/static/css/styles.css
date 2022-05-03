@@ -179,7 +179,8 @@ h3 {
 	}
 
 	#page-content {
-		background-image: url("../images/background.jpg");
+		<!-- background-image: url("../images/background.jpg"); -->
+		background-color: white;
 		background-size: cover;
 		background-position: center;
 		justify-content: center;
@@ -187,7 +188,8 @@ h3 {
 	}
 
 	#page-content-mobile {
-		background-image: url("../images/background_mobile.jpg");
+		<!-- background-image: url("../images/background_mobile.jpg"); -->
+		background-color: white;
 		background-size: cover;
 		background-position: center;
 		justify-content: center;
@@ -268,7 +270,7 @@ h3 {
 	.nm-tm-wr {
 		z-index: 1;
 		width: 350px; 
-		background-color: #fff; 
+		background-color: #fff;
 		border-radius: 0.5rem; 
 		padding: 1rem;
 		margin: 3rem 0rem;
@@ -560,6 +562,21 @@ h3 {
 /*  05. MEDIA QUERIES        */
 /*****************************/
 
+@media (max-width: 576px){
+	.nm-sm-tr {
+		text-align: right !important;
+	}
+
+	.nm-mb-sm-0 {
+		margin-bottom: 0rem !important;
+	}
+
+	.logo-image {
+		width: 300px;
+		height: auto;
+	}
+}
+
 @media (min-width: 576px){	
 	.nm-sm-tr {
 		text-align: right !important;
@@ -567,6 +584,11 @@ h3 {
 	
 	.nm-mb-sm-0 {
 		margin-bottom: 0rem !important;
+	}
+
+	.logo-image {
+		width: 300px;
+		height: auto;
 	}
 }
 
@@ -586,5 +608,10 @@ h3 {
 
 	#logo-container {
 		position: fixed;
+	}
+
+	.logo-image {
+		width: 300px;
+		height: auto;
 	}
 }

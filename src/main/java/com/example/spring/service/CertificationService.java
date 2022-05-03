@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CertificationService {
 
-    private final ErpUserMapper erpUserMapper;
-
     public void certifiedPhoneNumber(String phoneNumber, String cerNum) {
 
         String api_key = "NCS84QRJLPA4PV04";

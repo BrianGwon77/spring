@@ -4,6 +4,7 @@ import com.example.spring.filter.MyAuthenticationFilter;
 import com.example.spring.filter.MyAuthenticationProvider;
 import com.example.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,16 +21,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.session.*;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -51,9 +57,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/api/sendSMS").permitAll()
+                .antMatchers("/api/surem").permitAll()
                 .antMatchers("/video/**").permitAll()
                 .antMatchers("/api/main", "/api/resetPassword").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .anyRequest().hasAuthority("ROLE_ADMIN");
+                .anyRequest().hasAuthority("ROLE_ADMIN")
+                .and()
+                .sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                .and()
+                .sessionFixation();
 
         http
                 .exceptionHandling()
@@ -63,6 +76,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         response.sendRedirect("/api/login");
                     }
                 });
+
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry(){
+        return new SessionRegistryImpl();
     }
 
     @Bean
@@ -74,7 +93,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationManager(authenticationManagerBean());
         filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/api/main"));
         filter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/api/login"));
+        filter.setSessionAuthenticationStrategy(sessionAuthenticationStrategy());
         return filter;
+    }
+
+    @Bean
+    public CompositeSessionAuthenticationStrategy sessionAuthenticationStrategy(){
+        ConcurrentSessionControlAuthenticationStrategy concurrentSessionControlAuthenticationStrategy=
+                new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
+        concurrentSessionControlAuthenticationStrategy.setMaximumSessions(1);
+        concurrentSessionControlAuthenticationStrategy.setExceptionIfMaximumExceeded(false);
+        SessionFixationProtectionStrategy sessionFixationProtectionStrategy=new SessionFixationProtectionStrategy();
+        ChangeSessionIdAuthenticationStrategy changeSessionIdAuthenticationStrategy = new ChangeSessionIdAuthenticationStrategy();
+        RegisterSessionAuthenticationStrategy registerSessionStrategy = new RegisterSessionAuthenticationStrategy(sessionRegistry());
+        CompositeSessionAuthenticationStrategy sessionAuthenticationStrategy=new CompositeSessionAuthenticationStrategy(
+                Arrays.asList(concurrentSessionControlAuthenticationStrategy,changeSessionIdAuthenticationStrategy,sessionFixationProtectionStrategy,registerSessionStrategy));
+        return sessionAuthenticationStrategy;
     }
 
     @Bean
