@@ -99,7 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CompositeSessionAuthenticationStrategy sessionAuthenticationStrategy(){
-        ConcurrentSessionControlAuthenticationStrategy concurrentSessionControlAuthenticationStrategy=
+        ConcurrentSessionControlAuthenticationStrategy concurrentSessionControlAuthenticationStrategy =
                 new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
         concurrentSessionControlAuthenticationStrategy.setMaximumSessions(1);
         concurrentSessionControlAuthenticationStrategy.setExceptionIfMaximumExceeded(false);
