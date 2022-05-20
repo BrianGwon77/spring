@@ -15,6 +15,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public class LogAop {
         log.info("Method Name : {}",  name);
         log.info("----- Parameter List -----");
 
-        log.info("{}", Arrays.stream(joinPoint.getArgs()).map(arg->arg.toString()).collect(Collectors.toList()));
+        log.info("{}", Arrays.stream(joinPoint.getArgs()).filter(Objects::nonNull).map(arg->arg.toString()).collect(Collectors.toList()));
 
         log.info("Authorities : {}", authorities);
 

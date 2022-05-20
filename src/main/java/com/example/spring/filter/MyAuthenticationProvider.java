@@ -29,14 +29,19 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         String authenticationCode = userService.findAuthenticationCode(employeeNo);
         EmployeeDto employeeDto = userService.findEmployee(employeeNo);
 
+        if (employeeDto == null)
+            throw new BadCredentialsException("존재하지 않는 사번입니다.");
+
+        if (employeeDto.getContact() == null)
+            throw new BadCredentialsException("해당 사번과 매칭되는 휴대전화 정보가 없습니다.");
+
+        if (authenticationCode == null)
+            throw new BadCredentialsException("인증번호를 먼저 요청해주세요.");
+
         List<GrantedAuthority> roles = Arrays.stream(employeeDto.getAuthority().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-        if (authenticationCode == null) {
-            throw new BadCredentialsException("please, send authentication code first.");
-        }
-
         if (!(authentication.getCredentials().equals(authenticationCode)))
-            throw new BadCredentialsException("please, check your authentication code again.");
+            throw new BadCredentialsException("인증번호를 다시 확인해주세요.");
 
         MyAuthenticationToken myAuthenticationToken = new MyAuthenticationToken(employeeNo, authenticationCode, roles);
         myAuthenticationToken.setAuthenticated(true);

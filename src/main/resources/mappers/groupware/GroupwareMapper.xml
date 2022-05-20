@@ -9,4 +9,24 @@
             call SP_PasswordReset (#{employeeNo})
         }
     </update>
+    <select id="getFormList" resultType="com.example.spring.dto.FormDto">
+        SELECT
+            Subject
+            , FormInstID
+            , InitiatedDate
+            , completedDate
+            , BodyContext
+        FROM covi_approval4j.JWF_FORMINSTANCE
+        WHERE 1=1
+        AND CompletedDate <![CDATA[<>]]> ''
+        AND CompletedDate is not null
+        AND FormID = '64'
+    </select>
+    <select id="isExist" resultType="String">
+        SELECT
+            logonID
+        FROM covi_smart4j.sys_object_user
+        WHERE 1=1
+        AND logonID = #{id}
+    </select>
 </mapper>

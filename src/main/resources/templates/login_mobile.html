@@ -1,5 +1,17 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@200&family=Stylish&display=swap" rel="stylesheet">
+
+<style>
+    .swal2-popup
+    {
+        font-family: 'Stylish', sans-serif !important;
+    }
+</style>
+
 <head>
     <!-- // Required meta tags -->
     <meta charset="utf-8">
@@ -72,6 +84,11 @@
                 <div class="input-group nm-gp">
                     <span class="nm-gp-pp"><i class="fa fa-key"></i></span>
                     <input type="text" pattern="[0-9]{4}" class="form-control" th:field="*{authenticationCode}" tabindex="2" placeholder="인증번호">
+                    <span class="span_comm" id="span_min"></span><span class="span_comm"> : </span><span class="span_comm" id="span_sec"></span>
+                </div>
+
+                <div class="input-group nm-gp">
+                    <p class="alert alert-danger" th:unless="${error == null}" th:text="${exception}"></p>
                 </div>
 
                 <div class="row nm-aic nm-mb-1">
@@ -114,7 +131,7 @@
                 if (res['result'] == "false") {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops...',
+                        title: 'Error',
                         text: res['msg']
                     })
                 }
@@ -122,26 +139,57 @@
 
                     Swal.fire('인증번호가 발송되었습니다.');
 
-                    $('#sendBtn').click(function(e) {
-                    employeeNo = $('#employeeNo').val();
-                    let authenticationCode = $('#authenticationCode').val();
+                    $("#span_min").text("2");
+                    $("#span_sec").text("00")
 
-                    $.ajax({
-                        type: "POST",
-                        url: "/api/login",
-                        data: {
-                            "employeeNo": employeeNo,
-                            "authenticationCode": authenticationCode
-                        },
-                        error: function (error) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: '인증에 실패하였습니다'
-                            });
+                    let timer = setInterval(() => {
+
+                        let timer_min  = Number($("#span_min").text());
+                        let timer_sec  = Number($("#span_sec").text());
+                        let timer_sum = timer_min * 60 + timer_sec;
+
+                        if (timer_sum == 0) clearInterval(timer);
+                        else {
+
+                            timer_sum = timer_sum - 1;
+
+                            $("#span_min").text(Math.floor(timer_sum / 60));
+                            if (Math.floor(timer_sum % 60) < 10 ) $("#span_sec").text("0" + Math.floor(timer_sum % 60));
+                            else $("#span_sec").text(Math.floor(timer_sum % 60));
+
                         }
-                    });
-                })
+
+                    }, 1000);
+
+                   /* $('#sendBtn').click(function(e) {
+                        employeeNo = $('#employeeNo').val();
+                        let authenticationCode = $('#authenticationCode').val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/api/login",
+                            data: {
+                                "employeeNo": employeeNo,
+                                "authenticationCode": authenticationCode
+                            },
+                            success: function (res) {
+                                if (res['result']=="false") {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: '인증번호를 다시 확인해주세요.'
+                                    });
+                                }
+                            },
+                            error: function (error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: '인증에 실패하였습니다'
+                                });
+                            }
+                        });*/
+                  /*  })*/
                 }
             }
         })

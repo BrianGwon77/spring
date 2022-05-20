@@ -1,5 +1,17 @@
 <!doctype html>
 <html lang="en">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@200&family=Stylish&display=swap" rel="stylesheet">
+
+<style>
+	.swal2-popup
+	{
+		font-family: 'Stylish', sans-serif !important;
+	}
+</style>
+
 <head>
 	<!-- // Required meta tags -->
     <meta charset="utf-8">
@@ -97,14 +109,18 @@
 					Swal.fire({
 						icon: 'success',
 						title: 'Success',
-						text: res['msg']
+						html: res['msg'],
+						showConfirmButton: false,
+						timer: 3000
 					});
 				}
 				else {
 					Swal.fire({
 						icon: 'error',
-						title: 'Oops...',
-						text: res['msg']
+						title: 'Error',
+						html: res['msg'],
+						showConfirmButton: false,
+						timer: 3000
 					});
 				}
 			}

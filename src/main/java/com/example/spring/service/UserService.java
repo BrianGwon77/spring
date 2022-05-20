@@ -7,6 +7,7 @@ package com.example.spring.service;
 
 import com.example.spring.Constant;
 import com.example.spring.dto.EmployeeDto;
+import com.example.spring.dto.FormDto;
 import com.example.spring.mapper.erp.ErpUserMapper;
 import com.example.spring.mapper.groupware.GroupwareUserMapper;
 import com.example.spring.mapper.mes.MesUserMapper;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 @Service
 @Transactional(
@@ -59,6 +61,12 @@ public class UserService {
 
     public void disposeAuthenticationCode(String employeeNo){
         erpUserMapper.disposeAuthenticationCode(employeeNo);
+    }
+
+    public List<FormDto> getFormList() { return groupwareUserMapper.getFormList(); }
+
+    public boolean isExistOnGroupware(String id) {
+        return (groupwareUserMapper.isExist(id) == null) ? false : true;
     }
 
 }

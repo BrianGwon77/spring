@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Noto+Serif+KR:wght@200&family=Song+Myung&display=swap');
+  .serif-font {
+    font-family: 'Gowun Batang', serif; !important;
+  }
+  .input[type=text] {
+    width: 60%;
+  }
+</style>
+<div th:fragment="fragment-nav" class="serif-font">
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" th:href="@{/main}">상단메뉴</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#" th:href="@{/assetList}">자산정보</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#" th:href="@{/inspection/register}">실사선별</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" th:href="@{/inspectionList}">실사정보</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" th:href="@{/accountList}">계정조회</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            가이드
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" th:href="@{/edit}">가이드 작성</a>
+            <a class="dropdown-item" th:href="@{/postList}">가이드 조회</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+</html>

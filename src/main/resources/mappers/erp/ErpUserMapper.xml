@@ -24,7 +24,7 @@
 
     <insert id="issueAuthenticationCode" parameterType="String">
         INSERT INTO SPRING_AUTHENTICATION
-        VALUES (#{employeeNo}, #{authenticationCode}, GETDATE(), DATEADD(MINUTE, 3, GETDATE()), 'N');
+        VALUES (#{employeeNo}, #{authenticationCode}, GETDATE(), DATEADD(MINUTE, 2, GETDATE()), 'N');
     </insert>
 
     <update id="disposeAuthenticationCode" parameterType="String">
